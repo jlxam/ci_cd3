@@ -9,7 +9,7 @@ export default defineConfig({
   fullyParallel: true,
   reporter: 'html',
   use: {
-    headless: true,
+    headless: false,
     trace: 'on-first-retry',
   },
 });
