@@ -10,12 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
+
       - name: Install dependencies
         run: npm install
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+
       - name: Run smoke tests
         run: npx playwright test --grep @smoke
+
       - name: Run regression tests
         run: npx playwright test --grep @regression
+
+      - name: Upload trace artifacts
+        if: failure() # Only upload traces on failure to save storage
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results/**/trace.zip
