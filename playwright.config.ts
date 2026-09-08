@@ -23,25 +23,31 @@ export default defineConfig({
     : [['list'], ['html']],
 
   use: {
+    /* 🌟 முக்கிய திருத்தம்: உங்கள் இணையதளத்தின் முகவரியை (URL) இங்கே உள்ளிடவும் */
+    /* இது 'about:blank' போன்ற வெற்றுப் பக்கங்கள் பைப்லைனில் தோன்றுவதைத் தடுக்கும் */
+    baseURL: env.BASE_URL ?? 'https://yourstagingapp.com', 
+
     // CI-ல் இயங்கும்போது True ஆகவும், லோக்கலில் இயங்கும்போது False (Headed) ஆகவும் மாறும்
     headless: isCI,
     
     trace: 'on-first-retry',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
-     /* 🌟 ADD THESE NETWORK & USER AGENT RULES TO FIX BLANK PAGES 🌟 */
-    ignoreHTTPSErrors: true, // Prevents self-signed or test certificate blocks from halting page load
+     
+    /* Prevents self-signed or test certificate blocks from halting page load */
+    ignoreHTTPSErrors: true, 
     
-    // Disguises the automated runner as a standard consumer desktop browser
+    /* Disguises the automated runner as a standard consumer desktop browser */
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
 
+    /* 🌟 FIX: சிண்டாக்ஸ் பிழைகள் முழுமையாகச் சரிசெய்யப்பட்டு லான்ச் ஆப்ஷன்கள் சீரமைக்கப்பட்டுள்ளன */
     launchOptions: isCI ? {
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-gpu',
         '--disable-dev-shm-usage',
-        '--disable-blink-features=AutomationControlled', // Hides the "automated webdriver" flag from application security layers
+        '--disable-blink-features=AutomationControlled',
       ],
     } : undefined,
   },
