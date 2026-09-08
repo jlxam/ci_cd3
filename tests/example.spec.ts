@@ -34,7 +34,7 @@ test.describe('Admin Dashboard', { tag: ['@smoke', '@admin'] }, () => {
     await subjects.fill('Antony');
     await expect(music).toBeVisible();
     await music.check();
-
+ await page.waitForTimeout(3000);
     console.log('Running system settings test.2..');
   });
 });
