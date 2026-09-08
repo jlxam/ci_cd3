@@ -27,16 +27,17 @@ jobs:
         run: xvfb-run -a npx playwright test --grep @regression
 
       - name: Upload trace artifacts
-        if: failure() # Only upload traces on failure to save storage
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-traces
           path: test-results/**/trace.zip
 
+      # 🌟 FIX: ಇಂಡೆಂಟೇಶನ್ ಮತ್ತು ತಪ್ಪು ಸಾಲುಗಳನ್ನು ಇಲ್ಲಿ ಸರಿಪಡಿಸಲಾಗಿದೆ
       - name: Upload Playwright Artifacts
-        if: always() # Upload report regardless of pass/fail
+        if: failure() # ಟೆಸ್ಟ್ ಫೇಲ್ ಆದಾಗ ಮಾತ್ರ ವಿಡಿಯೋ ಮತ್ತು ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-artifacts-${{ github.sha }}
-          path: |
-            playwright-report
+          name: playwright-artifacts
+          path: test-results/ 
+          retention-days: 30
