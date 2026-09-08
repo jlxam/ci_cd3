@@ -23,7 +23,8 @@ export default defineConfig({
     : [['list'], ['html']],
 
   use: {
-    headless: false,
+    headless: isCI,
+    launchOptions: isCI ? { args: ['--disable-gpu', '--no-sandbox'] } : undefined,
     trace: 'on-first-retry',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
