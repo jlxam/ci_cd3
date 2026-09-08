@@ -29,16 +29,20 @@ export default defineConfig({
     trace: 'on-first-retry',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
-     
-    /* 🌟 FIX: டூப்ளிகேட் நீக்கப்பட்டு, CI மற்றும் லோக்கலுக்கு தகுந்தவாறு சீரமைக்கப்பட்டுள்ளது */
-    /* These flags tell Chromium to bypass GPU dependencies and sandboxing limitations in Linux CI */
+     /* 🌟 ADD THESE NETWORK & USER AGENT RULES TO FIX BLANK PAGES 🌟 */
+    ignoreHTTPSErrors: true, // Prevents self-signed or test certificate blocks from halting page load
+    
+    // Disguises the automated runner as a standard consumer desktop browser
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+
     launchOptions: isCI ? {
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-gpu',
         '--disable-dev-shm-usage',
+        '--disable-blink-features=AutomationControlled', // Hides the "automated webdriver" flag from application security layers
       ],
-    } : undefined, // லோக்கல் கம்ப்யூட்டரில் சாதாரணமாக இயங்கும்
+    } : undefined,
   },
 });
