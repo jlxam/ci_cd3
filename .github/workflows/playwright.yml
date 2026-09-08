@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TESTDINO_API_KEY: ${{ secrets.TESTDINO_API_KEY }}
+      CI: true
 
     steps:
       - uses: actions/checkout@v4
@@ -20,22 +21,13 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run smoke tests
-        run: xvfb-run -a npx playwright test --grep @smoke
+      # 🌟 FIX 1: Smoke மற்றும் Regression இரண்டையும் ஒரே கமாண்டில் இயக்குகிறோம்
+      # 🌟 FIX 2: '--headed' ஃபிளாக் மூலம் Headless False செய்யப்படுகிறது
+      - name: Run Playwright Tests (Headed Mode)
+        run: xvfb-run --server-args="-screen 0 1280x1024x24" npx playwright test --grep "@smoke|@regression" --headed
 
-      - name: Run regression tests
-        run: xvfb-run -a npx playwright test --grep @regression
-
-      - name: Upload trace artifacts
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-traces
-          path: test-results/**/trace.zip
-
-      # 🌟 FIX: ಇಂಡೆಂಟೇಶನ್ ಮತ್ತು ತಪ್ಪು ಸಾಲುಗಳನ್ನು ಇಲ್ಲಿ ಸರಿಪಡಿಸಲಾಗಿದೆ
       - name: Upload Playwright Artifacts
-        if: failure() # ಟೆಸ್ಟ್ ಫೇಲ್ ಆದಾಗ ಮಾತ್ರ ವಿಡಿಯೋ ಮತ್ತು ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ
+        if: always() 
         uses: actions/upload-artifact@v4
         with:
           name: playwright-artifacts
