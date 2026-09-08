@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TESTDINO_API_KEY: ${{ secrets.TESTDINO_API_KEY }}
-      CI: true
+      CI: true # 🌟 Playwright மற்றும் TestDino-விற்கு இது CI ரன் என்று அறிவிக்கிறது
 
     steps:
       - uses: actions/checkout@v4
@@ -21,11 +21,13 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      # 🌟 FIX 1: Smoke மற்றும் Regression இரண்டையும் ஒரே கமாண்டில் இயக்குகிறோம்
-      # 🌟 FIX 2: '--headed' ஃபிளாக் மூலம் Headless False செய்யப்படுகிறது
+      # 🌟 FIX: விர்ச்சுவல் ஸ்கிரீன் அளவை (1280x1024) அமைத்து, பிரவுசரை Headed Mode-ல் இயக்குகிறோம்.
+      # 🌟 இதன் மூலம் வீடியோவில் வெள்ளை பக்கத்திற்கு பதிலாக பிரவுசர் நேவிகேஷன் தெளிவாக தெரியும்.
+      # 🌟 Smoke மற்றும் Regression இரண்டையும் ஒரே கமாண்டில் இயக்குவதால் பைப்லைன் பாதியில் நிற்காது.
       - name: Run Playwright Tests (Headed Mode)
         run: xvfb-run --server-args="-screen 0 1280x1024x24" npx playwright test --grep "@smoke|@regression" --headed
 
+      # 🌟 FIX: டெஸ்ட் பாஸ் அல்லது ஃபெயில் எப்படி ஆனாலும் வீடியோக்களைப் பெற 'always()' மாற்றப்பட்டுள்ளது
       - name: Upload Playwright Artifacts
         if: always() 
         uses: actions/upload-artifact@v4
