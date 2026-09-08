@@ -7,9 +7,14 @@ export default defineConfig({
 
   testDir: './tests',
   fullyParallel: true,
-  reporter: 'html',
+  reporter: [
+    ['@testdino/playwright', { token: process.env.TESTDINO_API_KEY ?? process.env.TESTDINO_TOKEN }],
+    ['html'],
+  ],
   use: {
     headless: false,
     trace: 'on-first-retry',
+    video: 'retain-on-failure',
+    screenshot: 'only-on-failure',
   },
 });

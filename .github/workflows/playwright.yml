@@ -8,6 +8,8 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    env:
+      TESTDINO_API_KEY: ${{ secrets.TESTDINO_API_KEY }}
 
     steps:
       - uses: actions/checkout@v4
@@ -30,3 +32,11 @@ jobs:
         with:
           name: playwright-traces
           path: test-results/**/trace.zip
+
+      - name: Upload Playwright Artifacts
+        if: always() # Upload report regardless of pass/fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts-${{ github.sha }}
+          path: |
+            playwright-report
