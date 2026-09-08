@@ -23,10 +23,22 @@ export default defineConfig({
     : [['list'], ['html']],
 
   use: {
+    // CI-ல் இயங்கும்போது True ஆகவும், லோக்கலில் இயங்கும்போது False (Headed) ஆகவும் மாறும்
     headless: isCI,
-    launchOptions: isCI ? { args: ['--disable-gpu', '--no-sandbox'] } : undefined,
+    
     trace: 'on-first-retry',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
+     
+    /* 🌟 FIX: டூப்ளிகேட் நீக்கப்பட்டு, CI மற்றும் லோக்கலுக்கு தகுந்தவாறு சீரமைக்கப்பட்டுள்ளது */
+    /* These flags tell Chromium to bypass GPU dependencies and sandboxing limitations in Linux CI */
+    launchOptions: isCI ? {
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+      ],
+    } : undefined, // லோக்கல் கம்ப்யூட்டரில் சாதாரணமாக இயங்கும்
   },
 });
