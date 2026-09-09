@@ -43,7 +43,7 @@ test.describe('Admin Dashboard', { tag: ['@smoke', '@admin'] }, () => {
 test('User can successfully log in', { tag: '@regression' }, async ({ page }) => {
   console.log('Running a quick regression test..3.');
   const actualValue = 'Success';
-  const expectedValue = 'Success';
+  const expectedValue = 'Success1';
 
   expect(actualValue).toBe(expectedValue);
 });
