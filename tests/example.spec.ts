@@ -2,15 +2,10 @@ import { test, expect } from '@playwright/test';
 
 // --- SUITE LEVEL TAGGING ---
 // Everything inside this block automatically inherits the '@admin' and '@regression' tags
-test.describe('Admin Dashboard', { tag: ['@smoke', '@admin'] }, () => {
+test.describe('Registration', { tag: ['@smoke', '@admin'] }, () => {
   test('Admin can create a new user account', async ({ page }) => {
     await page.goto('https://demoqa.com/automation-practice-form', { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('#firstName')).toBeVisible();
-    console.log('Running inside smoke test 1...');
-  });
-
-  test('Zdmin can update system settings', { tag: '@admin' }, async ({ page }) => {
-    await page.goto('https://demoqa.com/automation-practice-form', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('#firstName')).toBeVisible(); 
 
     const firstName = page.locator('#firstName');
     const lastName = page.getByPlaceholder('Last Name');
@@ -40,7 +35,7 @@ test.describe('Admin Dashboard', { tag: ['@smoke', '@admin'] }, () => {
 });
 
 // --- INDIVIDUAL LEVEL TAGGING ---
-test('User can successfully log in', { tag: '@regression' }, async ({ page }) => {
+test('Validate value only', { tag: '@regression' }, async ({ page }) => {
   console.log('Running a quick regression test..3.');
   const actualValue = 'Success';
   const expectedValue = 'Success1';
