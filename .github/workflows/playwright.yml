@@ -7,8 +7,8 @@ on:
 
 jobs:
   run-tests:
-    # 🌟 FIX: லினக்ஸிற்கு பதிலாக விண்டோஸ் சர்வரைப் பயன்படுத்துகிறோம்
-    runs-on: windows-latest
+    # 🌟 Configured to run on an Ubuntu (Linux) runner
+    runs-on: ubuntu-latest
     env:
       TESTDINO_API_KEY: ${{ secrets.TESTDINO_API_KEY }}
       CI: true
@@ -22,7 +22,6 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      # 🌟 FIX: விண்டோஸில் 'xvfb-run' தேவையில்லை. சாதாரண கமாண்ட் மூலமாகவே பிரவுசர் இயங்கும்.
       - name: Run Playwright Tests
         run: npx playwright test --grep "@smoke|@regression"
 
@@ -31,5 +30,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-artifacts
-          path: test-results/ 
+          path: test-results/
           retention-days: 30
