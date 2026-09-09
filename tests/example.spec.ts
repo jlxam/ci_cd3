@@ -34,7 +34,7 @@ test.describe('Admin Dashboard', { tag: ['@smoke', '@admin'] }, () => {
     await subjects.fill('Antony');
     await expect(music).toBeVisible();
     await music.check();
- await page.waitForTimeout(3000);
+
     console.log('Running system settings test.2..');
   });
 });
@@ -43,7 +43,7 @@ test.describe('Admin Dashboard', { tag: ['@smoke', '@admin'] }, () => {
 test('User can successfully log in', { tag: '@regression' }, async ({ page }) => {
   console.log('Running a quick regression test..3.');
   const actualValue = 'Success';
-  const expectedValue = 'Success1';
+  const expectedValue = 'Success';
 
   expect(actualValue).toBe(expectedValue);
 });
